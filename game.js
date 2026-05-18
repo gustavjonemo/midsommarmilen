@@ -284,13 +284,10 @@ function girlHitbox() {
 // ── Score submission ──────────────────────────────────────────────────────────
 function submitScore() {
   if (APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') return;
-  try {
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: new URLSearchParams({ name: playerName, score: String(Math.floor(score)) }),
-    });
-  } catch (_) {}
+  const url = APPS_SCRIPT_URL
+    + '?name=' + encodeURIComponent(playerName)
+    + '&score=' + Math.floor(score);
+  fetch(url, { mode: 'no-cors' }).catch(() => {});
 }
 
 // ── Draw helpers ──────────────────────────────────────────────────────────────
