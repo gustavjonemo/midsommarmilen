@@ -122,38 +122,36 @@ const GIRL_SPRITES = [GIRL_RUN1, GIRL_RUN2];
 // Hitbox inset (pixels) — generous so it feels fair
 const GIRL_HIT_INSET = { l: 10, r: 10, t: 8, b: 2 };
 
-// ── Midsummer pole sprite ─────────────────────────────────────────────────────
-// 10 cols × 28 rows — all green, top wreath, full crossbar, two hanging rings
+// ── midsummer pole sprite ───────────────────────────────────────────────────── //
+// 14 cols × 25 rows — thinner crossbar, diagonals from top-center to outer-bottom
 const POLE = [
-  '  GLLLLG  ', // 0: top wreath leaves
-  ' GLPYYLGL ', // 1: pink/yellow flowers in wreath
-  '  GLLLLG  ', // 2: wreath base
-  '    LL    ', // 3: stem
-  'LLLLLLLLLL', // 4: horizontal crossbar top
-  'GLLLLLLLGL', // 5: crossbar center
-  'LLLLLLLLLL', // 6: crossbar base
-  ' P  LL  P ', // 7: top of rings (pink flower at attachment point)
-  'L L LL L L', // 8: ring sides (hollow circles)
-  ' Y  LL  Y ', // 9: bottom of rings (yellow flower)
-  '    LL    ', // 10: pole shaft
-  '   PLLP   ', // 11: flower accent
-  '    LL    ', // 12
-  '    LL    ', // 13
-  '   YLLY   ', // 14: flower accent
-  '    LL    ', // 15
-  '    LL    ', // 16
-  '    LL    ', // 17
-  '   PLLP   ', // 18: flower accent
-  '    LL    ', // 19
-  '    LL    ', // 20
-  '    LL    ', // 21
-  '    LL    ', // 22
-  '    LL    ', // 23
-  '    LL    ', // 24
-  '    LL    ', // 25
-  '    LL    ', // 26
-  '   LLLL   ', // 27: base
+  '    LLLL    ', // 3: diagonals starting tight at the top center
+  '   LLLLLL   ', // 4: diagonals starting to spread
+  '  L LLLL L  ', // 5: diagonals body moving outward
+  ' L  LLLL  L ', // 6: diagonals body moving outward
+  'GLLLLLLLLLLG', // 7: crossbar (diagonals connect to the outer edges 'G' here)
+  '  PP    PP  ', // 8: top of rings (pink attachment points)
+  ' LLLL  LLLL ', // 9: ring tops
+  'LL  LLLL  LL', // 10: ring sides / pole shaft
+  'LL  LLLL  LL', // 11: ring sides
+  ' LLLL  LLLL ', // 12: ring bottoms
+  '  YY    YY  ', // 13: bottom of rings (yellow flower)
+  '    LLLL    ', // 14: pole shaft
+  '   PLLLLP   ', // 15: flower accent
+  '    LLLL    ', // 16
+  '    LLLL    ', // 17
+  '   YLLLLY   ', // 18: flower accent
+  '    LLLL    ', // 19
+  '    LLLL    ', // 20
+  '    LLLL    ', // 21
+  '   PLLLLP   ', // 22: flower accent
+  '    LLLL    ', // 23
+  '    LLLL    ', // 24
+  '    LLLL    ', // 25
+  '    LLLL    ', // 26
+  '    LLLL    ', // 27: base
 ];
+
 
 const POLE_W = spriteWidth(POLE);
 const POLE_H = spriteHeight(POLE);
