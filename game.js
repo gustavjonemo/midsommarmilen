@@ -123,48 +123,46 @@ const GIRL_SPRITES = [GIRL_RUN1, GIRL_RUN2];
 const GIRL_HIT_INSET = { l: 10, r: 10, t: 8, b: 2 };
 
 // ── Midsummer pole sprite ─────────────────────────────────────────────────────
-// 10 cols × 28 rows
+// 10 cols × 28 rows — top wreath, crossbar with circles, diagonal ribbons
 const POLE = [
-  '   LLLL   ', // leaves at top
-  '  LLLLLL  ',
-  '   LLLL   ',
-  ' TTBBBBTT ', // crossbar with ribbons
-  ' T BBBB T ',
-  ' T BBBB T ',
-  '   BBBB   ', // pole shaft
-  '  ABBB T  ', // ribbons start
-  ' A BBB  T ',
-  'A  BBB   T',
-  '   BBB    ',
-  '  ABBB    ',
-  ' A BBB T  ',
-  'A  BBB  T ',
-  '   BBB   T',
-  '   BBB    ',
-  '  ABBB    ',
-  ' A BBB T  ',
-  'A  BBB  T ',
-  '   BBB   T',
-  '   BBB    ',
-  '   BBB    ',
-  '   BBB    ',
-  '   BBB    ',
-  '   BBB    ',
-  '   BBB    ',
-  '   BBB    ',
-  '  BBBBB   ', // base
+  '   LLLL   ', // 0: top wreath leaves
+  '  LPYYPL  ', // 1: pink/yellow flowers in wreath
+  ' LLPBBPLL ', // 2: leaves, pole peek in center
+  '  LPYYPL  ', // 3: flowers
+  '   LLLL   ', // 4: base of wreath
+  '    BB    ', // 5: short pole under wreath
+  'GLBBBBBBLG', // 6: horizontal crossbar with leaf circles at ends
+  'PLBBBBBBPL', // 7: flowers at arm ends
+  'GLBBBBBBLG', // 8: crossbar base
+  'PG  BB  GP', // 9: circles below arm ends
+  'LG  BB  GL', // 10: circles complete
+  ' A  BB  T ', // 11: ribbons start diagonally (A=red, T=tan)
+  'A   BB   T', // 12
+  ' A  BB  T ', // 13
+  'A   BB   T', // 14
+  ' A  BB  T ', // 15
+  'A   BB   T', // 16
+  '    BB    ', // 17
+  ' A  BB  T ', // 18
+  'A   BB   T', // 19
+  '    BB    ', // 20
+  '    BB    ', // 21
+  '    BB    ', // 22
+  '    BB    ', // 23
+  '    BB    ', // 24
+  '    BB    ', // 25
+  '    BB    ', // 26
+  '   BBBB   ', // 27: base
 ];
 
 const POLE_W = spriteWidth(POLE);
 const POLE_H = spriteHeight(POLE);
 
 // ── Bottle sprite ─────────────────────────────────────────────────────────────
-// 3 cols × 14 rows = 12×56 px
+// 3 cols × 12 rows = 12×48 px
 const BOTTLE = [
   ' V ',
   ' V ',
-  'VJV',
-  'VJV',
   'VJV',
   'VJV',
   'VJV',
@@ -180,15 +178,19 @@ const BOTTLE_W = spriteWidth(BOTTLE);
 const BOTTLE_H = spriteHeight(BOTTLE);
 
 // ── Sill can sprite ───────────────────────────────────────────────────────────
-// 8 cols × 7 rows = 32×28 px
+// 12 cols × 9 rows = 48×36 px — mustard label with pixel-art "SILL" in white
+// Pixel-art "SILL": S at cols 1-2, I at col 4, L at cols 6-7, L at cols 9-10
+// Background Q (mustard), letters W (white), borders M (silver)
 const SILL_CAN = [
-  'KMMMMMMK',
-  'MMMMMMMM',
-  'MQQQQQQM',
-  'MQQQQQQM',
-  'MQQQQQQM',
-  'MMMMMMMM',
-  'KMMMMMMK',
+  'KMMMMMMMMMMK', // top cap
+  'MMMMMMMMMMMM',
+  'MWWQWQWQQWQM', // S top WW, -, I, -, L left, -, L left
+  'MWQQWQWQQWQM', // S left
+  'MWWQWQWQQWQM', // S middle WW
+  'MQWQWQWQQWQM', // S right
+  'MWWQWQWWQWWM', // S/I/L/L bottom bars
+  'MMMMMMMMMMMM',
+  'KMMMMMMMMMMK', // bottom cap
 ];
 const SILL_W = spriteWidth(SILL_CAN);
 const SILL_H = spriteHeight(SILL_CAN);
@@ -349,7 +351,7 @@ function drawBackground() {
   ctx.font = 'italic 18px Georgia, serif';
   ctx.fillStyle = 'rgba(140, 110, 55, 0.22)';
   ctx.textAlign = 'center';
-  ctx.fillText('Lomma Beach', W / 2, 196);
+  ctx.fillText('Lomma Beach', W / 2, 238);
   ctx.restore();
 
   // Clouds
