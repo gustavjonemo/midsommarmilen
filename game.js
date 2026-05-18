@@ -123,36 +123,36 @@ const GIRL_SPRITES = [GIRL_RUN1, GIRL_RUN2];
 const GIRL_HIT_INSET = { l: 10, r: 10, t: 8, b: 2 };
 
 // ── Midsummer pole sprite ─────────────────────────────────────────────────────
-// 10 cols × 28 rows — top wreath, crossbar with circles, diagonal ribbons
+// 10 cols × 28 rows — all green, top wreath, full crossbar, two hanging rings
 const POLE = [
-  '   LLLL   ', // 0: top wreath leaves
-  '  LPYYPL  ', // 1: pink/yellow flowers in wreath
-  ' LLPBBPLL ', // 2: leaves, pole peek in center
-  '  LPYYPL  ', // 3: flowers
-  '   LLLL   ', // 4: base of wreath
-  '    BB    ', // 5: short pole under wreath
-  'GLBBBBBBLG', // 6: horizontal crossbar with leaf circles at ends
-  'PLBBBBBBPL', // 7: flowers at arm ends
-  'GLBBBBBBLG', // 8: crossbar base
-  'PG  BB  GP', // 9: circles below arm ends
-  'LG  BB  GL', // 10: circles complete
-  ' A  BB  T ', // 11: ribbons start diagonally (A=red, T=tan)
-  'A   BB   T', // 12
-  ' A  BB  T ', // 13
-  'A   BB   T', // 14
-  ' A  BB  T ', // 15
-  'A   BB   T', // 16
-  '    BB    ', // 17
-  ' A  BB  T ', // 18
-  'A   BB   T', // 19
-  '    BB    ', // 20
-  '    BB    ', // 21
-  '    BB    ', // 22
-  '    BB    ', // 23
-  '    BB    ', // 24
-  '    BB    ', // 25
-  '    BB    ', // 26
-  '   BBBB   ', // 27: base
+  '  GLLLLG  ', // 0: top wreath leaves
+  ' GLPYYLGL ', // 1: pink/yellow flowers in wreath
+  '  GLLLLG  ', // 2: wreath base
+  '    LL    ', // 3: stem
+  'LLLLLLLLLL', // 4: horizontal crossbar top
+  'GLLLLLLLGL', // 5: crossbar center
+  'LLLLLLLLLL', // 6: crossbar base
+  ' P  LL  P ', // 7: top of rings (pink flower at attachment point)
+  'L L LL L L', // 8: ring sides (hollow circles)
+  ' Y  LL  Y ', // 9: bottom of rings (yellow flower)
+  '    LL    ', // 10: pole shaft
+  '   PLLP   ', // 11: flower accent
+  '    LL    ', // 12
+  '    LL    ', // 13
+  '   YLLY   ', // 14: flower accent
+  '    LL    ', // 15
+  '    LL    ', // 16
+  '    LL    ', // 17
+  '   PLLP   ', // 18: flower accent
+  '    LL    ', // 19
+  '    LL    ', // 20
+  '    LL    ', // 21
+  '    LL    ', // 22
+  '    LL    ', // 23
+  '    LL    ', // 24
+  '    LL    ', // 25
+  '    LL    ', // 26
+  '   LLLL   ', // 27: base
 ];
 
 const POLE_W = spriteWidth(POLE);
@@ -432,7 +432,7 @@ function loop() {
   if (nextPoleIn <= 0) {
     const types = ['pole', 'pole', 'pole', 'bottle', 'sill'];
     poles.push({ x: W + 10, type: types[Math.floor(Math.random() * types.length)] });
-    nextPoleIn = Math.floor(Math.random() * 90 + 80) + Math.max(0, Math.floor((10 - speed) * 5));
+    nextPoleIn = Math.floor(Math.random() * 70 + 65) + Math.max(0, Math.floor((10 - speed) * 5));
   }
 
   // Move poles
