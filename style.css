@@ -22,6 +22,9 @@ body {
   display: block;
   border: 3px solid #4a7c59;
   border-radius: 4px;
+  width: min(800px, 100vw);
+  aspect-ratio: 800 / 300;
+  touch-action: none;
 }
 
 .overlay {
