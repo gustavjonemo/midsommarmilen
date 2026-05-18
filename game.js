@@ -28,6 +28,10 @@ const C = {
   L: '#27AE60', // leaf green
   N: '#F5DEB3', // near-white apron
   O: '#CC7722', // orange accent
+  V: '#1B5E20', // bottle dark green
+  J: '#388E3C', // bottle highlight
+  M: '#B0BEC5', // can silver
+  Q: '#F9A825', // can label mustard
 };
 
 // ── Sprite renderer ───────────────────────────────────────────────────────────
@@ -153,6 +157,41 @@ const POLE = [
 
 const POLE_W = spriteWidth(POLE);
 const POLE_H = spriteHeight(POLE);
+
+// ── Bottle sprite ─────────────────────────────────────────────────────────────
+// 3 cols × 14 rows = 12×56 px
+const BOTTLE = [
+  ' V ',
+  ' V ',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VJV',
+  'VVV',
+  'VVV',
+];
+const BOTTLE_W = spriteWidth(BOTTLE);
+const BOTTLE_H = spriteHeight(BOTTLE);
+
+// ── Sill can sprite ───────────────────────────────────────────────────────────
+// 8 cols × 7 rows = 32×28 px
+const SILL_CAN = [
+  'KMMMMMMK',
+  'MMMMMMMM',
+  'MQQQQQQM',
+  'MQQQQQQM',
+  'MQQQQQQM',
+  'MMMMMMMM',
+  'KMMMMMMK',
+];
+const SILL_W = spriteWidth(SILL_CAN);
+const SILL_H = spriteHeight(SILL_CAN);
 
 // ── Ground decoration ─────────────────────────────────────────────────────────
 const GRASS_BLADES = [];
@@ -299,6 +338,20 @@ function drawBackground() {
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, W, GROUND_Y);
 
+  // Faint sea strip
+  ctx.fillStyle = 'rgba(75, 155, 210, 0.22)';
+  ctx.fillRect(0, 148, W, 68);
+  // Faint sand strip
+  ctx.fillStyle = 'rgba(218, 194, 140, 0.2)';
+  ctx.fillRect(0, 202, W, GROUND_Y - 202);
+  // 'Lomma Beach' watermark
+  ctx.save();
+  ctx.font = 'italic 18px Georgia, serif';
+  ctx.fillStyle = 'rgba(140, 110, 55, 0.22)';
+  ctx.textAlign = 'center';
+  ctx.fillText('Lomma Beach', W / 2, 196);
+  ctx.restore();
+
   // Clouds
   ctx.fillStyle = 'rgba(255,255,255,0.85)';
   for (const cloud of CLOUDS) {
@@ -375,21 +428,30 @@ function loop() {
   // Spawn poles
   nextPoleIn--;
   if (nextPoleIn <= 0) {
-    poles.push({ x: W + 10 });
-    nextPoleIn = Math.floor(Math.random() * 60 + 90) + Math.max(0, Math.floor((10 - speed) * 5));
+    const types = ['pole', 'pole', 'pole', 'bottle', 'sill'];
+    poles.push({ x: W + 10, type: types[Math.floor(Math.random() * types.length)] });
+    nextPoleIn = Math.floor(Math.random() * 90 + 80) + Math.max(0, Math.floor((10 - speed) * 5));
   }
 
   // Move poles
   for (const pole of poles) pole.x -= speed;
-  poles = poles.filter(p => p.x + POLE_W > -10);
+  poles = poles.filter(p => p.x > -120);
 
   // Collision
   const g = girlHitbox();
-  for (const pole of poles) {
-    const px = pole.x + 10; // inset pole collision (ribbons don't count)
-    const pw = POLE_W - 20;
-    const py = GROUND_Y - POLE_H;
-    if (rectsOverlap(g.x, g.y, g.w, g.h, px, py + 24, pw, POLE_H - 24)) {
+  for (const obs of poles) {
+    let ox, oy, ow, oh;
+    if (obs.type === 'bottle') {
+      ox = obs.x;          ow = BOTTLE_W;
+      oy = GROUND_Y - BOTTLE_H + 8; oh = BOTTLE_H - 8; // skip thin neck
+    } else if (obs.type === 'sill') {
+      ox = obs.x + 4;      ow = SILL_W - 8;
+      oy = GROUND_Y - SILL_H; oh = SILL_H;
+    } else {
+      ox = obs.x + 10;     ow = POLE_W - 20;
+      oy = GROUND_Y - POLE_H + 24; oh = POLE_H - 24;
+    }
+    if (rectsOverlap(g.x, g.y, g.w, g.h, ox, oy, ow, oh)) {
       gameOver();
       return;
     }
@@ -400,8 +462,10 @@ function loop() {
   drawBackground();
   drawGround();
 
-  for (const pole of poles) {
-    drawSprite(POLE, pole.x, GROUND_Y - POLE_H);
+  for (const obs of poles) {
+    if (obs.type === 'bottle') drawSprite(BOTTLE, obs.x, GROUND_Y - BOTTLE_H);
+    else if (obs.type === 'sill') drawSprite(SILL_CAN, obs.x, GROUND_Y - SILL_H);
+    else drawSprite(POLE, obs.x, GROUND_Y - POLE_H);
   }
 
   drawSprite(currentSprite, girlX, girlY);
@@ -421,13 +485,17 @@ function gameOver() {
   ctx.clearRect(0, 0, W, H);
   drawBackground();
   drawGround();
-  for (const pole of poles) drawSprite(POLE, pole.x, GROUND_Y - POLE_H);
+  for (const obs of poles) {
+    if (obs.type === 'bottle') drawSprite(BOTTLE, obs.x, GROUND_Y - BOTTLE_H);
+    else if (obs.type === 'sill') drawSprite(SILL_CAN, obs.x, GROUND_Y - SILL_H);
+    else drawSprite(POLE, obs.x, GROUND_Y - POLE_H);
+  }
   drawSprite(GIRL_RUN1, girlX, girlY);
   drawScore();
 
   showOverlay(
     `${playerName}: ${finalScore} poäng!`,
-    'Spela igen!',
+    'Spela igen',
     false
   );
 }
