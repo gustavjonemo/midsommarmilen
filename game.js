@@ -1,5 +1,5 @@
 // Paste your Google Apps Script Web App URL here after deploying it
-const APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkN5-bwvAoGfE9ijvOCYrrHOBUfkUXoxPkHBt4cbQAKOBGcnGJmCdZkZsC7_jzt3ox/exec';
 
 // ── Canvas setup ─────────────────────────────────────────────────────────────
 const canvas = document.getElementById('gameCanvas');
