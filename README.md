@@ -1,6 +1,6 @@
 # Midsommarmilen
 
-Hoppa över midsommarstängerna! A Swedish midsummer endless runner for the party.
+A Swedish midsummer endless runner.
 
 **Live game:** https://gustavjonemo.github.io/midsommarmilen
 
