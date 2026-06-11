@@ -31,7 +31,6 @@ const C = {
   V: '#1B5E20', // bottle dark green
   J: '#388E3C', // bottle highlight
   M: '#B0BEC5', // can silver
-  Q: '#F9A825', // can label mustard
 };
 
 // ── Sprite renderer ───────────────────────────────────────────────────────────
@@ -59,68 +58,68 @@ function spriteHeight(sprite) {
   return sprite.length * SCALE;
 }
 
-// ── Girl sprites ──────────────────────────────────────────────────────────────
-// 13 cols × 18 rows, rendered at 4px = 52×72 px
-const GIRL_RUN1 = [
-  '  PYPYPYP   ', // crown flowers
-  '  GGGGGGG   ', // crown leaves
-  ' HHHHHHHHH  ', // hair
-  ' HSSSSSSSSH ', // face row 1
-  ' HSSSSSSSSH ', // face row 2
-  '  SSSSSSSSS ', // neck
-  ' NWWWWWWWWN ', // white blouse
-  ' NWWWWWWWWN ', // blouse
-  ' RRRRRRRRR  ', // red trim
-  '  DDDDDDD   ', // dress
-  ' NDDDDDDDN  ', // dress + apron
-  ' NDDDDDDDN  ', // dress
-  ' RRRRRRRR   ', // hem trim
-  '   WW WW    ', // legs split
-  '   WW  W    ', // legs (run 1)
-  '  KKK  K    ', // shoes
+// ── Frog sprites ──────────────────────────────────────────────────────────────
+// 13 cols × 11 rows, rendered at 4px = 52×44 px
+const FROG_RUN1 = [
+  '  WWW   WWW  ', // eyes
+  '  WKW   WKW  ', // pupils
+  ' LLLLLLLLLLL ', // head
+  'LLLLLLLLLLLLL',
+  'LLLLLLLLLLLLL',
+  'LJNNNNNNNNNJL', // belly
+  'LJNNNNNNNNNJL',
+  'LLNNNNNNNNNLL',
+  ' LLLLLLLLLLL ',
+  '  LLL   LLL  ', // legs
+  ' VV     VV   ', // feet (run 1)
 ];
 
-const GIRL_RUN2 = [
-  '  PYPYPYP   ',
-  '  GGGGGGG   ',
-  ' HHHHHHHHH  ',
-  ' HSSSSSSSSH ',
-  ' HSSSSSSSSH ',
-  '  SSSSSSSSS ',
-  ' NWWWWWWWWN ',
-  ' NWWWWWWWWN ',
-  ' RRRRRRRRR  ',
-  '  DDDDDDD   ',
-  ' NDDDDDDDN  ',
-  ' NDDDDDDDN  ',
-  ' RRRRRRRR   ',
-  '   WW WW    ',
-  '    W  WW   ', // legs (run 2 — opposite)
-  '    K  KKK  ',
+const FROG_RUN2 = [
+  '  WWW   WWW  ',
+  '  WKW   WKW  ',
+  ' LLLLLLLLLLL ',
+  'LLLLLLLLLLLLL',
+  'LLLLLLLLLLLLL',
+  'LJNNNNNNNNNJL',
+  'LJNNNNNNNNNJL',
+  'LLNNNNNNNNNLL',
+  ' LLLLLLLLLLL ',
+  '  LLL   LLL  ',
+  '   VV     VV ', // feet (run 2 — opposite)
 ];
 
-const GIRL_JUMP = [
-  '  PYPYPYP   ',
-  '  GGGGGGG   ',
-  ' HHHHHHHHH  ',
-  ' HSSSSSSSSH ',
-  ' HSSSSSSSSH ',
-  '  SSSSSSSSS ',
-  ' NWWWWWWWWN ',
-  ' NWWWWWWWWN ',
-  ' RRRRRRRRR  ',
-  '  DDDDDDD   ',
-  ' NDDDDDDDN  ',
-  ' NDDDDDDDN  ',
-  ' RRRRRRRR   ',
-  '  WWWWWW    ', // legs tucked
-  '  KKKKK     ',
+const FROG_LEAP = [
+  '  WWW   WWW  ',
+  '  WKW   WKW  ',
+  ' LLLLLLLLLLL ',
+  'LLLLLLLLLLLLL',
+  'LJNNNNNNNNNJL',
+  'LLNNNNNNNNNLL',
+  ' LLLLLLLLLLL ',
+  '  LL     LL  ',
+  '  LL     LL  ', // legs stretched out mid-leap
+  ' LL       LL ',
+  'VV         VV',
 ];
 
-const GIRL_SPRITES = [GIRL_RUN1, GIRL_RUN2];
+const FROG_TUCK = [
+  '  WWW   WWW  ',
+  '  WKW   WKW  ',
+  ' LLLLLLLLLLL ',
+  'LLLLLLLLLLLLL',
+  'LJNNNNNNNNNJL',
+  'LJNNNNNNNNNJL',
+  'LLNNNNNNNNNLL',
+  ' LLLLLLLLLLL ',
+  ' LLLLLLLLLLL ', // legs pulled in for landing
+  '  VVV   VVV  ',
+  '             ',
+];
+
+const FROG_SPRITES = [FROG_RUN1, FROG_RUN2];
 
 // Hitbox inset (pixels) — generous so it feels fair
-const GIRL_HIT_INSET = { l: 10, r: 10, t: 8, b: 2 };
+const FROG_HIT_INSET = { l: 6, r: 6, t: 6, b: 2 };
 
 // ── midsummer pole sprite ───────────────────────────────────────────────────── //
 // 14 cols × 25 rows — thinner crossbar, diagonals from top-center to outer-bottom
@@ -176,22 +175,145 @@ const BOTTLE_W = spriteWidth(BOTTLE);
 const BOTTLE_H = spriteHeight(BOTTLE);
 
 // ── Sill can sprite ───────────────────────────────────────────────────────────
-// 12 cols × 9 rows = 48×36 px — mustard label with pixel-art "SILL" in white
-// Pixel-art "SILL": S at cols 1-2, I at col 4, L at cols 6-7, L at cols 9-10
-// Background Q (mustard), letters W (white), borders M (silver)
+// 12 cols × 9 rows = 48×36 px — blue can, white fish on the label.
+// Fish faces left: nose, eye, body, V-tail at the right
 const SILL_CAN = [
-  'KMMMMMMMMMMK', // top cap
-  'MMMMMMMMMMMM',
-  'MWWQWQWQQWQM', // S top WW, -, I, -, L left, -, L left
-  'MWQQWQWQQWQM', // S left
-  'MWWQWQWQQWQM', // S middle WW
-  'MQWQWQWQQWQM', // S right
-  'MWWQWQWWQWWM', // S/I/L/L bottom bars
-  'MMMMMMMMMMMM',
-  'KMMMMMMMMMMK', // bottom cap
+  'KMMMMMMMMMMK', // top cap (silver)
+  'DDDDDDDDDDDD',
+  'DDDDDDDDDDDD',
+  'DDDWWWWDDWDD', // fish back + upper tail fin
+  'DDWKWWWWWWDD', // nose, eye, body, tail centre
+  'DDDWWWWDDWDD', // fish belly + lower tail fin
+  'DDDDDDDDDDDD',
+  'DDDDDDDDDDDD',
+  'KMMMMMMMMMMK', // bottom cap (silver)
 ];
 const SILL_W = spriteWidth(SILL_CAN);
 const SILL_H = spriteHeight(SILL_CAN);
+
+// ── Seagull sprite ────────────────────────────────────────────────────────────
+// 11 cols × 6 rows = 44×24 px — flies left, two wing frames, body on rows 2-3
+const BIRD_UP = [
+  '    MM     ',
+  '    MMM    ',
+  ' OKWWWWWWM ',
+  '  WWWWWWW  ',
+  '           ',
+  '           ',
+];
+const BIRD_DOWN = [
+  '           ',
+  '           ',
+  ' OKWWWWWWM ',
+  '  WWWWWWW  ',
+  '    MMM    ',
+  '    MM     ',
+];
+const BIRD_W = spriteWidth(BIRD_UP);
+const BIRD_H = spriteHeight(BIRD_UP);
+
+// ── People sprites ────────────────────────────────────────────────────────────
+// 11 cols × 14 rows = 44×56 px — midsummer guests in blue & yellow with flower
+// wreaths. Girls: long hair + dress; boys: short hair + pants. Two walk frames.
+const GIRL_WALK1 = [
+  '  GLRGLWG  ', // flower wreath — green with dashes of red and white
+  ' HHHHHHHHH ',
+  ' HSSSSSSSH ',
+  ' HSSSSSSSH ',
+  ' HHSSSSSHH ',
+  ' HHYYYYYHH ', // yellow blouse, long hair down the sides
+  ' HHYYYYYHH ',
+  '  YYYYYYY  ',
+  '  DDDDDDD  ', // blue dress
+  ' DDDDDDDDD ',
+  'DDDDDDDDDDD',
+  '   SS SS   ',
+  '   SS SS   ',
+  '  KKK KKK  ',
+];
+
+const GIRL_WALK2 = [
+  '  GLRGLWG  ',
+  ' HHHHHHHHH ',
+  ' HSSSSSSSH ',
+  ' HSSSSSSSH ',
+  ' HHSSSSSHH ',
+  ' HHYYYYYHH ',
+  ' HHYYYYYHH ',
+  '  YYYYYYY  ',
+  '  DDDDDDD  ',
+  ' DDDDDDDDD ',
+  'DDDDDDDDDDD',
+  '   SS SS   ',
+  '  SS   SS  ', // legs apart mid-stride
+  ' KKK   KKK ',
+];
+
+const BOY_WALK1 = [
+  '  GLRGLWG  ', // flower wreath — green with dashes of red and white
+  '  HHHHHHH  ', // short hair
+  '  SSSSSSS  ',
+  '  SSSSSSS  ',
+  '   SSSSS   ',
+  '  YYYYYYY  ', // yellow shirt
+  ' YYYYYYYYY ',
+  ' YYYYYYYYY ',
+  '  YYYYYYY  ',
+  '  DDDDDDD  ', // blue pants
+  '  DDDDDDD  ',
+  '  DD   DD  ',
+  '  DD   DD  ',
+  '  KK   KK  ',
+];
+
+const BOY_WALK2 = [
+  '  GLRGLWG  ',
+  '  HHHHHHH  ',
+  '  SSSSSSS  ',
+  '  SSSSSSS  ',
+  '   SSSSS   ',
+  '  YYYYYYY  ',
+  ' YYYYYYYYY ',
+  ' YYYYYYYYY ',
+  '  YYYYYYY  ',
+  '  DDDDDDD  ',
+  '  DDDDDDD  ',
+  '  DD   DD  ',
+  '   DD DD   ', // legs together mid-stride
+  '   KK KK   ',
+];
+
+const PERSON_SPRITES = { girl: [GIRL_WALK1, GIRL_WALK2], boy: [BOY_WALK1, BOY_WALK2] };
+const PERSON_W = spriteWidth(GIRL_WALK1);
+const PERSON_H = spriteHeight(GIRL_WALK1);
+const PERSON_WALK_SPEED = 1; // extra px/frame — they stroll toward the player
+
+const PEOPLE = [
+  { name: 'Malte', g: 'boy' },
+  { name: 'Sanne', g: 'girl' },
+  { name: 'Linus', g: 'boy' },
+  { name: 'Pawel', g: 'boy' },
+  { name: 'Lina', g: 'girl' },
+  { name: 'Alice', g: 'girl' },
+  { name: 'Oscar', g: 'boy' },
+  { name: 'Donjeta', g: 'girl' },
+  { name: 'Jacob', g: 'boy' },
+  { name: 'Oliver', g: 'boy' },
+  { name: 'Axel', g: 'boy' },
+  { name: 'Arvid', g: 'boy' },
+  { name: 'Morris', g: 'boy' },
+  { name: 'Patric', g: 'boy' },
+  { name: 'Sara', g: 'girl' },
+  { name: 'Petra', g: 'girl' },
+  { name: 'Ralf', g: 'boy' },
+  { name: 'Kevin', g: 'boy' },
+  { name: 'Lovisa', g: 'girl' },
+  { name: 'Varad', g: 'boy' },
+  { name: 'Elisabeth', g: 'girl' },
+  { name: 'Judith', g: 'girl' },
+  { name: 'Gustav', g: 'boy' },
+  { name: 'Erik', g: 'boy' },
+];
 
 // ── Ground decoration ─────────────────────────────────────────────────────────
 const GRASS_BLADES = [];
@@ -212,18 +334,31 @@ let frameCount = 0;
 let animFrame = 0;
 let animTick = 0;
 
-// Girl physics
-let girlX = 80;
-let girlY = GROUND_Y - spriteHeight(GIRL_RUN1);
-let girlVY = 0;
+// Frog physics
+let frogX = 80;
+let frogY = GROUND_Y - spriteHeight(FROG_RUN1);
+let frogVY = 0;
 const GRAVITY = 0.6;
 const JUMP_V = -13;
 let onGround = true;
-let currentSprite = GIRL_RUN1;
+let currentSprite = FROG_RUN1;
 
 // Poles
 let poles = [];
 let nextPoleIn = 90; // frames until next pole spawns
+
+// Slow motion while a person walks into frame, so their name can be read
+const SLOWMO_FACTOR = 0.20;
+const SLOWMO_DURATION = 100; // frames
+let slowmoFrames = 0;
+
+// Birds (only appear once speed reaches BIRD_MIN_SPEED)
+const BIRD_MIN_SPEED = 15;
+const BIRD_ALTITUDES = [80, 150]; // bird-bottom px above ground — safe to run under, risky to jump into
+let birds = [];
+let nextBirdIn = 150;
+let birdHits = 0;     // first bird hit only stings
+let invulnFrames = 0; // flashing grace period after a bird hit
 
 // Ground scroll
 let groundOffset = 0;
@@ -261,11 +396,16 @@ function startGame() {
   frameCount = 0;
   animTick = 0;
   animFrame = 0;
-  girlY = GROUND_Y - spriteHeight(GIRL_RUN1);
-  girlVY = 0;
+  frogY = GROUND_Y - spriteHeight(FROG_RUN1);
+  frogVY = 0;
   onGround = true;
   poles = [];
   nextPoleIn = 90;
+  slowmoFrames = 0;
+  birds = [];
+  nextBirdIn = 150;
+  birdHits = 0;
+  invulnFrames = 0;
   groundOffset = 0;
   state = 'PLAYING';
   hideOverlay();
@@ -275,7 +415,7 @@ function startGame() {
 // ── Input ─────────────────────────────────────────────────────────────────────
 function jump() {
   if (state === 'PLAYING' && onGround) {
-    girlVY = JUMP_V;
+    frogVY = JUMP_V;
     onGround = false;
   }
 }
@@ -309,14 +449,14 @@ function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
   return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
 }
 
-function girlHitbox() {
-  const gw = spriteWidth(GIRL_RUN1);
-  const gh = spriteHeight(GIRL_RUN1);
+function frogHitbox() {
+  const gw = spriteWidth(FROG_RUN1);
+  const gh = spriteHeight(FROG_RUN1);
   return {
-    x: girlX + GIRL_HIT_INSET.l,
-    y: girlY + GIRL_HIT_INSET.t,
-    w: gw - GIRL_HIT_INSET.l - GIRL_HIT_INSET.r,
-    h: gh - GIRL_HIT_INSET.t - GIRL_HIT_INSET.b,
+    x: frogX + FROG_HIT_INSET.l,
+    y: frogY + FROG_HIT_INSET.t,
+    w: gw - FROG_HIT_INSET.l - FROG_HIT_INSET.r,
+    h: gh - FROG_HIT_INSET.t - FROG_HIT_INSET.b,
   };
 }
 
@@ -330,13 +470,30 @@ function submitScore() {
 }
 
 // ── Draw helpers ──────────────────────────────────────────────────────────────
-function drawBackground() {
+function drawBackground(scroll = 0) {
   // Sky gradient
   const sky = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
   sky.addColorStop(0, '#4A9EDA');
   sky.addColorStop(1, '#87CEEB');
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, W, GROUND_Y);
+
+  // Stationary sun tucked into the top right corner — only a quarter disc shows
+  ctx.fillStyle = 'rgba(255, 221, 80, 0.55)';
+  ctx.beginPath();
+  ctx.moveTo(W, 0);
+  ctx.arc(W, 0, 64, Math.PI / 2, Math.PI);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255, 221, 80, 0.35)';
+  ctx.lineWidth = 4;
+  for (let i = 0; i < 4; i++) {
+    const a = Math.PI / 2 + ((Math.PI / 2) * (i + 0.5)) / 4;
+    ctx.beginPath();
+    ctx.moveTo(W + Math.cos(a) * 74, Math.sin(a) * 74);
+    ctx.lineTo(W + Math.cos(a) * 88, Math.sin(a) * 88);
+    ctx.stroke();
+  }
 
   // Faint sea strip
   ctx.fillStyle = 'rgba(75, 155, 210, 0.22)';
@@ -355,7 +512,7 @@ function drawBackground() {
   // Clouds
   ctx.fillStyle = 'rgba(255,255,255,0.85)';
   for (const cloud of CLOUDS) {
-    cloud.x -= cloud.speed * (speed / 5);
+    cloud.x -= cloud.speed * (scroll / 5);
     if (cloud.x + cloud.w < 0) cloud.x = W + cloud.w;
     ctx.beginPath();
     ctx.ellipse(cloud.x, cloud.y, cloud.w / 2, 14, 0, 0, Math.PI * 2);
@@ -365,7 +522,7 @@ function drawBackground() {
   }
 }
 
-function drawGround() {
+function drawGround(scroll = 0) {
   // Ground base
   ctx.fillStyle = '#4a7c3f';
   ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
@@ -375,13 +532,32 @@ function drawGround() {
   ctx.fillRect(0, GROUND_Y, W, 6);
 
   // Scrolling grass blades
-  groundOffset = (groundOffset + speed) % (W * 2);
+  groundOffset = (groundOffset + scroll) % (W * 2);
   ctx.fillStyle = '#3d6b33';
   for (const blade of GRASS_BLADES) {
     const x = (blade.x - groundOffset + W * 2) % (W * 2);
     if (x > W) continue;
     ctx.fillRect(x, GROUND_Y - blade.h + 4, 2, blade.h);
   }
+}
+
+function drawObstacles() {
+  for (const obs of poles) {
+    if (obs.type === 'bottle') drawSprite(BOTTLE, obs.x, GROUND_Y - BOTTLE_H);
+    else if (obs.type === 'sill') drawSprite(SILL_CAN, obs.x, GROUND_Y - SILL_H);
+    else if (obs.type === 'person') {
+      const frames = PERSON_SPRITES[obs.person.g];
+      drawSprite(frames[frameCount % 20 < 10 ? 0 : 1], obs.x, GROUND_Y - PERSON_H);
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.font = 'bold 36px "Courier New", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(obs.person.name, obs.x + PERSON_W / 2, GROUND_Y + 36);
+      ctx.textAlign = 'left';
+    }
+    else drawSprite(POLE, obs.x, GROUND_Y - POLE_H);
+  }
+  const birdSprite = frameCount % 16 < 8 ? BIRD_UP : BIRD_DOWN;
+  for (const bird of birds) drawSprite(birdSprite, bird.x, bird.y);
 }
 
 function drawScore() {
@@ -400,45 +576,67 @@ function loop() {
   if (state !== 'PLAYING') return;
   frameCount++;
 
-  // Score & speed
-  score += speed / 10;
-  if (frameCount % 300 === 0) speed = Math.min(speed + 0.5, 14);
+  // Score & speed (slow motion scales movement, not physics)
+  const tick = slowmoFrames > 0 ? SLOWMO_FACTOR : 1;
+  const effSpeed = speed * tick;
+  if (slowmoFrames > 0) slowmoFrames--;
+  score += effSpeed / 10;
+  if (frameCount % 80 === 0) speed = Math.min(speed + 0.5, 22);
+  if (invulnFrames > 0) invulnFrames--;
 
-  // Girl animation
+  // Frog animation
   animTick++;
   if (animTick % 7 === 0) animFrame = (animFrame + 1) % 2;
   if (onGround) {
-    currentSprite = GIRL_SPRITES[animFrame];
+    currentSprite = FROG_SPRITES[animFrame];
   } else {
-    currentSprite = GIRL_JUMP;
+    currentSprite = frogVY < 0 ? FROG_LEAP : FROG_TUCK;
   }
 
   // Physics
   if (!onGround) {
-    girlVY += GRAVITY;
-    girlY += girlVY;
-    const groundLevel = GROUND_Y - spriteHeight(GIRL_RUN1);
-    if (girlY >= groundLevel) {
-      girlY = groundLevel;
-      girlVY = 0;
+    frogVY += GRAVITY * tick;
+    frogY += frogVY * tick;
+    const groundLevel = GROUND_Y - spriteHeight(FROG_RUN1);
+    if (frogY >= groundLevel) {
+      frogY = groundLevel;
+      frogVY = 0;
       onGround = true;
     }
   }
 
   // Spawn poles
-  nextPoleIn--;
+  nextPoleIn -= tick;
   if (nextPoleIn <= 0) {
-    const types = ['pole', 'pole', 'pole', 'bottle', 'sill'];
-    poles.push({ x: W + 10, type: types[Math.floor(Math.random() * types.length)] });
-    nextPoleIn = Math.floor(Math.random() * 70 + 65) + Math.max(0, Math.floor((10 - speed) * 5));
+    const types = ['pole', 'pole', 'pole', 'bottle', 'sill', 'person'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const obs = { x: W + 10, type };
+    if (type === 'person') {
+      obs.person = PEOPLE[Math.floor(Math.random() * PEOPLE.length)];
+      slowmoFrames = SLOWMO_DURATION;
+    }
+    poles.push(obs);
+    nextPoleIn = Math.floor(Math.random() * 60 + 55) + Math.max(0, Math.floor((10 - speed) * 5));
   }
 
-  // Move poles
-  for (const pole of poles) pole.x -= speed;
+  // Move poles (people also walk toward the player)
+  for (const pole of poles) pole.x -= pole.type === 'person' ? effSpeed + PERSON_WALK_SPEED * tick : effSpeed;
   poles = poles.filter(p => p.x > -120);
 
+  // Spawn birds (late-game only) — they fly a bit faster than the ground scrolls
+  if (speed >= BIRD_MIN_SPEED) {
+    nextBirdIn -= tick;
+    if (nextBirdIn <= 0) {
+      const alt = BIRD_ALTITUDES[Math.floor(Math.random() * BIRD_ALTITUDES.length)];
+      birds.push({ x: W + 10, y: GROUND_Y - alt - BIRD_H });
+      nextBirdIn = Math.floor(Math.random() * 240 + 180);
+    }
+  }
+  for (const bird of birds) bird.x -= effSpeed + 3 * tick;
+  birds = birds.filter(b => b.x > -BIRD_W - 20);
+
   // Collision
-  const g = girlHitbox();
+  const g = frogHitbox();
   for (const obs of poles) {
     let ox, oy, ow, oh;
     if (obs.type === 'bottle') {
@@ -447,6 +645,9 @@ function loop() {
     } else if (obs.type === 'sill') {
       ox = obs.x + 4;      ow = SILL_W - 8;
       oy = GROUND_Y - SILL_H; oh = SILL_H;
+    } else if (obs.type === 'person') {
+      ox = obs.x + 8;      ow = PERSON_W - 16;
+      oy = GROUND_Y - PERSON_H + 4; oh = PERSON_H - 4;
     } else {
       ox = obs.x + 10;     ow = POLE_W - 20;
       oy = GROUND_Y - POLE_H + 24; oh = POLE_H - 24;
@@ -456,19 +657,30 @@ function loop() {
       return;
     }
   }
+  for (let i = birds.length - 1; i >= 0; i--) {
+    const bird = birds[i];
+    // body only (rows 2-3), so wing tips don't kill
+    if (rectsOverlap(g.x, g.y, g.w, g.h, bird.x + 4, bird.y + 8, BIRD_W - 8, BIRD_H - 16)) {
+      if (invulnFrames > 0) continue;
+      birds.splice(i, 1);
+      birdHits++;
+      if (birdHits >= 2) {
+        gameOver();
+        return;
+      }
+      invulnFrames = 90; // ~1.5 s of flashing
+    }
+  }
 
   // Draw
   ctx.clearRect(0, 0, W, H);
-  drawBackground();
-  drawGround();
+  drawBackground(effSpeed);
+  drawGround(effSpeed);
 
-  for (const obs of poles) {
-    if (obs.type === 'bottle') drawSprite(BOTTLE, obs.x, GROUND_Y - BOTTLE_H);
-    else if (obs.type === 'sill') drawSprite(SILL_CAN, obs.x, GROUND_Y - SILL_H);
-    else drawSprite(POLE, obs.x, GROUND_Y - POLE_H);
-  }
+  drawObstacles();
 
-  drawSprite(currentSprite, girlX, girlY);
+  // blink while invulnerable (always draws when invulnFrames is 0)
+  if (invulnFrames % 8 < 4) drawSprite(currentSprite, frogX, frogY);
   drawScore();
 
   requestAnimationFrame(loop);
@@ -481,16 +693,12 @@ function gameOver() {
   if (finalScore > hiScore) hiScore = finalScore;
   submitScore();
 
-  // Draw one last frame with the girl standing still
+  // Draw one last frame with the frog standing still
   ctx.clearRect(0, 0, W, H);
   drawBackground();
   drawGround();
-  for (const obs of poles) {
-    if (obs.type === 'bottle') drawSprite(BOTTLE, obs.x, GROUND_Y - BOTTLE_H);
-    else if (obs.type === 'sill') drawSprite(SILL_CAN, obs.x, GROUND_Y - SILL_H);
-    else drawSprite(POLE, obs.x, GROUND_Y - POLE_H);
-  }
-  drawSprite(GIRL_RUN1, girlX, girlY);
+  drawObstacles();
+  drawSprite(FROG_RUN1, frogX, frogY);
   drawScore();
 
   showOverlay(
@@ -508,8 +716,8 @@ function gameOver() {
   drawGround();
   // Draw a decorative pole in the background
   drawSprite(POLE, W * 0.7, GROUND_Y - POLE_H);
-  // Draw girl standing still
-  drawSprite(GIRL_RUN1, girlX, GROUND_Y - spriteHeight(GIRL_RUN1));
+  // Draw frog standing still
+  drawSprite(FROG_RUN1, frogX, GROUND_Y - spriteHeight(FROG_RUN1));
 })();
 
 showOverlay('Ange ditt namn för att börja spela!', 'Spela!', true);
